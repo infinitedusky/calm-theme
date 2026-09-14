@@ -55,16 +55,7 @@
     {% endfor %}
   {% endif %}
   
-  {% render 'thai-translation',
-    english_text: word | capitalize,
-    thai_text: metafield_translation.thai,
-    phonetic: metafield_translation.phonetic,
-    syllables: syllables_string,
-    meaning: metafield_translation.meaning,
-    example_thai: metafield_translation.exampleSentence.thai,
-    example_english: metafield_translation.exampleSentence.english,
-    example_phonetic: metafield_translation.exampleSentence.phonetic
-  %}
+  {% render 'thai-translation', english_text: word, thai_text: metafield_translation.thai, phonetic: metafield_translation.phonetic, syllables: syllables_string, meaning: metafield_translation.meaning, example_thai: metafield_translation.exampleSentence.thai, example_english: metafield_translation.exampleSentence.english, example_phonetic: metafield_translation.exampleSentence.phonetic %}
 {% elsif word and word != blank %}
   {% comment %} Fall back to hardcoded translations {% endcomment %}
   {% assign common_translations = 'hello:สวัสดี:sà-wàt-dii:สวัส,ดี:Hello/Goodbye:สวัสดีครับ ผมชื่อจอห์น:Hello, my name is John:sà-wàt-dii kráp, pǒm chɯ̂ɯ jɔɔn|thankyou:ขอบคุณ:kɔ̀ɔp-kun:ขอบ,คุณ:Thank you:ขอบคุณมากครับ:Thank you very much:kɔ̀ɔp-kun mâak kráp|water:น้ำ:náam:น้ำ:Water:ขอน้ำหนึ่งแก้วครับ:I would like one glass of water, please:kɔ̌ɔ náam nɯ̀ŋ gɛ̂ɛw kráp|food:อาหาร:aa-hǎan:อา,หาร:Food:อาหารไทยอร่อยมาก:Thai food is very delicious:aa-hǎan tai à-rɔ̀i mâak|beautiful:สวย:sǔai:สวย:Beautiful:ดอกไม้สวยมาก:The flowers are very beautiful:dɔ̀ɔk-mái sǔai mâak|outdoor:กิจกรรมกลางแจ้ง:gìt-jà-gam-glaang-jɛ́ɛŋ:กิจ,กรรม,กลาง,แจ้ง:Outdoor activities:เราชอบกิจกรรมกลางแจ้ง:We like outdoor activities:rao chɔ̂ɔp gìt-jà-gam-glaang-jɛ́ɛŋ|cap:หมวก:mùak:หมวก:Hat/Cap:หมวกใบนี้สวยมาก:This hat is very beautiful:mùak bai níi sǔai mâak|jacket:แจ็คเก็ต:jɛ́k-gèt:แจ็ค,เก็ต:Jacket:แจ็คเก็ตตัวนี้อุ่นดี:This jacket is very warm:jɛ́k-gèt tua níi ùun dii|pants:กางเกง:gaang-geeŋ:กาง,เกง:Pants:กางเกงตัวนี้สบาย:These pants are comfortable:gaang-geeŋ tua níi sà-baai|shirt:เสื้อ:sɯ̂a:เสื้อ:Shirt:เสื้อตัวนี้นุ่มมาก:This shirt is very soft:sɯ̂a tua níi nûm mâak' | split: '|' %}
@@ -72,16 +63,7 @@
   {% for translation_data in common_translations %}
     {% assign parts = translation_data | split: ':' %}
     {% if parts[0] == word %}
-      {% render 'thai-translation',
-        english_text: parts[0] | capitalize,
-        thai_text: parts[1],
-        phonetic: parts[2],
-        syllables: parts[3],
-        meaning: parts[4],
-        example_thai: parts[5],
-        example_english: parts[6],
-        example_phonetic: parts[7]
-      %}
+      {% render 'thai-translation', english_text: parts[0], thai_text: parts[1], phonetic: parts[2], syllables: parts[3], meaning: parts[4], example_thai: parts[5], example_english: parts[6], example_phonetic: parts[7] %}
       {% break %}
     {% endif %}
   {% endfor %}
@@ -97,4 +79,42 @@
     example_english: example_english,
     example_phonetic: example_phonetic
   %}
-{% endif %}
+{% endif %}{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'thai-translation',
+        english_text: word | capitalize,
+        thai_text: metafield_translation.thai,
+        phonetic: metafield_translation.phonetic,
+        syllables: syllables_string,
+        meaning: metafield_translation.meaning,
+        example_thai: metafield_translation.exampleSentence.thai,
+        example_english: metafield_translation.exampleSentence.english,
+        example_phonetic: metafield_translation.exampleSentence.phonetic
+      %}
+  to: "{% render 'thai-translation', english_text: word, thai_text: metafield_translation.thai,
+    phonetic: metafield_translation.phonetic, syllables: syllables_string, meaning:
+    metafield_translation.meaning, example_thai: metafield_translation.exampleSentence.thai,
+    example_english: metafield_translation.exampleSentence.english, example_phonetic:
+    metafield_translation.exampleSentence.phonetic %}"
+  position: 2023..2412
+- from: |-
+    {% render 'thai-translation',
+            english_text: parts[0] | capitalize,
+            thai_text: parts[1],
+            phonetic: parts[2],
+            syllables: parts[3],
+            meaning: parts[4],
+            example_thai: parts[5],
+            example_english: parts[6],
+            example_phonetic: parts[7]
+          %}
+  to: "{% render 'thai-translation', english_text: parts[0], thai_text: parts[1],
+    phonetic: parts[2], syllables: parts[3], meaning: parts[4], example_thai: parts[5],
+    example_english: parts[6], example_phonetic: parts[7] %}"
+  position: 3824..4039
+{%- endcomment -%}
